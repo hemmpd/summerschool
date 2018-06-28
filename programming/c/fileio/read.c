@@ -35,16 +35,22 @@ void read_input(double image_buffer[][NY_MAX], char *filename)
 {
     FILE *fp;
     int nx, ny, i, j;
+	float temp;
 
     if ((fp = fopen(filename, "r")) == NULL) {
         fprintf(stderr, "Could not open file: %s\n", filename);
         exit(EXIT_FAILURE);
     }
     // Read the header
-#error Add fscanf to read the dimensions of the array
+	fscanf(fp, "# %d %d", &nx, &ny);
 
     // Read the actual data
-#error Add the loop where you read in the array into image_buffer
+	for (i=0; i<nx; i++) {
+		for (j=0; j<ny; j++) {
+			fscanf(fp, "%f", &temp);
+			image_buffer[i][j] = (double) temp;
+		}
+	}
 
     // Write out an pgm file
     write_pgm(image_buffer, "bottle.pgm", nx, ny);
