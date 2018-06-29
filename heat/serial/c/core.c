@@ -21,7 +21,13 @@ void evolve(field *curr, field *prev, double a, double dt)
 
     /* TODO: Add update loops for computing the new field values
              of 'curr' using field 'prev' */
-#error Add update loops
+    for (i=1; i< prev->nx-1; i++) {
+        for (j=1; j< prev->ny-1; j++) {
+            curr->data[i][j] = prev->data[i][j] +
+                dt*a*((prev->data[i-1][j] - 2*prev->data[i][j] + prev->data[i+1][j])/dx2 +
+                (prev->data[i][j-1] - 2*prev->data[i][j] + prev->data[i][j+1])/dy2);
+        }
+    }
 
 }
 

@@ -79,14 +79,25 @@ void generate_field(field *temperature)
     int i, j;
     double radius;
     int dx, dy;
+	float temp;
 
     /* Allocate the temperature array, note that
      * we have to allocate also the ghost layers */
     temperature->data =
         malloc_2d(temperature->nx + 2, temperature->ny + 2);
 
+    printf("%d", temperature->nx);
+
     /* TODO: Initialize the values of temperature */
-#error Add field initialization
+    FILE *fp;
+    fp = fopen("bottle.dat", "r");
+
+    for (i=0; i< temperature->nx; i++) {
+        for (j=0; j< temperature->ny; j++) {
+            fscanf(fp, "%f", &temp);
+            temperature->data[i][j] = (double) temp;
+        }
+    }
 
 }
 
