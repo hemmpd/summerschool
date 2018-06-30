@@ -14,6 +14,8 @@ int main(int argc, char *argv[])
         printf("In total there are %i tasks\n", ntasks);
     }
 
+    printf("This is task %i / %i\n", myid, ntasks);
+
     printf("Hello from %i\n", myid);
 
     MPI_Finalize();
