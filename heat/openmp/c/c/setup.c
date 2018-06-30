@@ -86,8 +86,6 @@ void generate_field(field *temperature)
     temperature->data =
         malloc_2d(temperature->nx + 2, temperature->ny + 2);
 
-    printf("%d", temperature->nx);
-
     /* TODO: Initialize the values of temperature */
     FILE *fp;
     fp = fopen("bottle.dat", "r");

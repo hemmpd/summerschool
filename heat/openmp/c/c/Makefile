@@ -21,7 +21,7 @@ ifeq ($(COMP),gnu)
 CC=gcc
 CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
-LIBS=-lpng
+LIBS=-lpng -fopenmp
 endif
 
 EXE=heat_serial

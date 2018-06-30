@@ -24,29 +24,38 @@ int main(int argc, char **argv)
 
     clock_t start_clock;        //!< Time stamps
 
+    #pragma omp parallel for private(iter)
+    {
+
     initialize(argc, argv, &current, &previous, &nsteps);
+    
+    #pragma omp single 
+    {
+        /* Output the initial field */
+        write_field(&current, 0);
 
-    /* Output the initial field */
-    write_field(&current, 0);
+        /* Largest stable time step */
+        dx2 = current.dx * current.dx;
+        dy2 = current.dy * current.dy;
+        dt = dx2 * dy2 / (2.0 * a * (dx2 + dy2));
 
-    /* Largest stable time step */
-    dx2 = current.dx * current.dx;
-    dy2 = current.dy * current.dy;
-    dt = dx2 * dy2 / (2.0 * a * (dx2 + dy2));
-
-    /* Get the start time stamp */
-    start_clock = clock();
+        /* Get the start time stamp */
+        start_clock = clock();
+    }
 
     /* Time evolve */
-    #pragma omp parallel for default(shared) private(i, j)
     for (iter = 1; iter < nsteps; iter++) {
+        #pragma omp single
         evolve(&current, &previous, a, dt);
         if (iter % image_interval == 0) {
+            #pragma omp single
             write_field(&current, iter);
         }
         /* Swap current field so that it will be used
             as previous for next iteration step */
+        #pragma omp single
         swap_fields(&current, &previous);
+    }
     }
 
     /* Determine the CPU time used for the iteration */
