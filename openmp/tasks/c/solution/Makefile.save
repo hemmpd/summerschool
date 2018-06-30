@@ -13,7 +13,7 @@ LDFLAGS=-L/appl/opt/libpng/lib
 LIBS=-lpng -lz
 endif
 
-ifeq ($(COMP),gnu)
+ifeq ($(COMP),gnu)n
 CC=gcc
 FCFLAGS=-fopenmp -O3 -Wall
 CCFLAGS=-fopenmp -O3 -Wall -I$(COMMONDIR)

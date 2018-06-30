@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     cmin = -1.5 + -1.0 * I;
     cmax = 0.5 + 1.0 * I;
 
-    double t1 = omp_get_wtime();
+    //double t1 = omp_get_wtime();
 
 // TODO create parallel region. How many threads should be calling
 // mandelbrot_block in this uppermost level?
@@ -118,15 +118,15 @@ int main(int argc, char **argv)
         mandelbrot_block(iter_counts, w, h, cmin, cmax,
                          0, 0, w, 1);
     }
-    double t2 = omp_get_wtime();
+    //double t2 = omp_get_wtime();
 
     // Save the image to a PNG file
     save_png(iter_counts, w, h, "mandelbrot.png");
 
-    double walltime = t2 - t1;
+    //double walltime = t2 - t1;
     // Print the timings
-    printf("Mandelbrot set computed in %.3lf s, at %.3lf Mpix/s\n",
-           walltime, h * w * 1e-6 / walltime);
+    //printf("Mandelbrot set computed in %.3lf s, at %.3lf Mpix/s\n",
+    //       walltime, h * w * 1e-6 / walltime);
 
     free(iter_counts);
     return 0;
