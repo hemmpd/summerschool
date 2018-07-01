@@ -1,22 +1,7 @@
-ifeq ($(COMP),)
-COMP=cray
-endif
-
-COMMONDIR=../../common
-
-ifeq ($(COMP),cray)
-CC=cc
-CCFLAGS=-O3 -I/appl/opt/libpng/include -I$(COMMONDIR)
-LDFLAGS=-L/appl/opt/libpng/lib
-LIBS=-lpng -lz
-endif
-
-ifeq ($(COMP),gnu)
 CC=mpicc
 CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng
-endif
 
 EXE=heat_mpi
 OBJS=core.o setup.o utilities.o io.o main.o

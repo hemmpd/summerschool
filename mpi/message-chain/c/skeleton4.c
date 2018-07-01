@@ -5,12 +5,14 @@
 int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
-    int size = 10;
+    int size = 10000000;
     int *message;
     int *receiveBuffer;
     MPI_Status status;
 
     double t0, t1;
+
+    int source, destination;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
@@ -24,25 +26,31 @@ int main(int argc, char *argv[])
         message[i] = myid;
     }
 
+    /* Set source and destination ranks */
+    if (myid < ntasks - 1) {
+        destination = myid + 1;
+    } else {
+        destination = MPI_PROC_NULL;
+    }
+    if (myid > 0) {
+        source = myid - 1;
+    } else {
+        source = MPI_PROC_NULL;
+    }
+
     /* Start measuring the time spent in communication */
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
-    /* TODO start */
-    /* Send and receive messages as defined in exercise */
-    if (myid < ntasks - 1) {
-        MPI_Send(message, size, MPI_INT, myid + 1, myid + 1, MPI_COMM_WORLD);
-        printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-               myid, size, myid + 1, myid + 1);
-    }
-
-    if (myid > 0) {
-        MPI_Recv(receiveBuffer, size, MPI_INT, myid - 1, myid, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        printf("Receiver: %d. first element %d.\n",
-               myid, receiveBuffer[0]);
-    }
-
-    /* TODO end */
+    /* Send and receive messages */
+    MPI_Sendrecv(message, size, MPI_INT, destination, myid + 1,
+                 receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
+                 MPI_COMM_WORLD, &status);
+    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
+           myid, size, myid + 1, destination);
+    int count;
+    MPI_Get_count(&status, MPI_INT, &count);
+    printf("Data received: %d\n", count);
 
     /* Finalize measuring the time and print it out */
     t1 = MPI_Wtime();
