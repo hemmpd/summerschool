@@ -32,14 +32,30 @@ int main(int argc, char *argv[])
     /* Print data that will be sent */
     print_buffers(printbuf, sendbuf, 2 * NTASKS);
 
-    /* TODO: use a single collective communication call (and maybe prepare
-     *       some parameters for the call) */
+    /* use a single collective communication call (and maybe prepare
+     * some parameters for the call) */
+    // BROADCAST
+    //MPI_Ibcast(sendbuf, 2 * NTASKS, MPI_INT, 3, MPI_COMM_WORLD, &request);
 
-    /* TODO: remember to complete the collective operation */
+    //SCATTER
+    //MPI_Iscatter(sendbuf, 2, MPI_INT, recvbuf, 2, MPI_INT, 0, MPI_COMM_WORLD, &request);
+
+    //GATHERV
+    /*int counts[4] = {1, 1, 2, 4};
+    int disp[4] = {0, 1, 2, 4};
+
+    MPI_Igatherv(sendbuf, counts[rank], MPI_INT, recvbuf, counts, disp, MPI_INT,
+                1, MPI_COMM_WORLD, &request);*/
+
+    //ALLTOALL
+    MPI_Ialltoall();
+
+    /* remember to complete the collective operation */
+    MPI_Wait(&request, MPI_STATUS_IGNORE);
 
     /* Print data that was received */
-    /* TODO: add correct buffer */
-    print_buffers(printbuf, ..., 2 * NTASKS);
+    /* add correct buffer */
+    print_buffers(printbuf, recvbuf, 2 * NTASKS);
 
     MPI_Finalize();
     return 0;
